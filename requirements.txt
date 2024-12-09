@@ -1,0 +1,8 @@
+Django==4.2.8
+Pillow==10.2.0
+python-dotenv==1.0.0
+pytz==2024.2
+anthropic==0.7.4
+better-profanity==0.7.0
+gunicorn==21.2.0  # For production server
+whitenoise==6.6.0  # For serving static files

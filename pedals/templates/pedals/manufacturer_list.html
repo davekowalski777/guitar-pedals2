@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} - Manufacturers{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Manufacturers</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for manufacturer in manufacturers %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ manufacturer.name }}</h5>
+                    {% if manufacturer.about %}
+                        <p class="card-text">{{ manufacturer.about|truncatewords:30 }}</p>
+                    {% endif %}
+                    <a href="{% url 'pedals:pedal_list' %}?manufacturer={{ manufacturer.id }}" class="btn btn-outline-primary">View Pedals</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">No manufacturers found in the database.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} - Home{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="jumbotron bg-light p-5 rounded">
+        <h1 class="display-4">Welcome to Guitar Pedal Database</h1>
+        <p class="lead">Discover and learn about the best guitar pedals from an experienced guitarist's perspective.</p>
+        <hr class="my-4">
+        <p>Browse through our collection of pedal reviews, ratings, and detailed insights.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'pedals:pedal_list' %}" role="button">Browse Pedals</a>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="mb-4">Featured Pedals</h2>
+        </div>
+        {% for pedal in featured_pedals %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if pedal.image_url %}
+                    <img src="{{ pedal.image_url }}" class="card-img-top" alt="{{ pedal.name }}" style="height: 200px; object-fit: contain; padding: 1rem;">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-guitar fa-3x text-secondary"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ pedal.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ pedal.manufacturer.name }}</h6>
+                    <p class="card-text">
+                        <span class="badge bg-primary">{{ pedal.pedal_type.name }}</span>
+                        {% if pedal.my_rating %}
+                            <span class="badge bg-warning text-dark">Rating: {{ pedal.my_rating }}/5</span>
+                        {% endif %}
+                    </p>
+                    <p class="card-text">{{ pedal.what_makes_it_good|truncatewords:30 }}</p>
+                    <div class="d-grid">
+                        <a href="{% url 'pedals:pedal_detail' pedal.slug %}" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

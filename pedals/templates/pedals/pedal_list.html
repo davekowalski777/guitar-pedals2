@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %} - All Pedals{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Filters</h5>
+                    <form method="get">
+                        <div class="mb-3">
+                            <label for="manufacturer" class="form-label">Manufacturer</label>
+                            <select name="manufacturer" id="manufacturer" class="form-select">
+                                <option value="">All Manufacturers</option>
+                                {% for m in manufacturers %}
+                                <option value="{{ m.id }}" {% if selected_manufacturer == m.id|stringformat:"i" %}selected{% endif %}>
+                                    {{ m.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Pedal Type</label>
+                            <select name="type" id="type" class="form-select">
+                                <option value="">All Types</option>
+                                {% for t in pedal_types %}
+                                <option value="{{ t.id }}" {% if selected_type == t.id|stringformat:"i" %}selected{% endif %}>
+                                    {{ t.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        {% if selected_manufacturer or selected_type %}
+                            <a href="{% url 'pedals:pedal_list' %}" class="btn btn-secondary">Clear Filters</a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for pedal in pedals %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        {% if pedal.image_url %}
+                            <img src="{{ pedal.image_url }}" class="card-img-top" alt="{{ pedal.name }}" style="height: 200px; object-fit: contain; padding: 1rem;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="fas fa-guitar fa-3x text-secondary"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pedal.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ pedal.manufacturer.name }}</h6>
+                            <p class="card-text">
+                                <span class="badge bg-primary">{{ pedal.pedal_type.name }}</span>
+                                {% if pedal.my_rating %}
+                                    <span class="badge bg-warning text-dark">Rating: {{ pedal.my_rating }}/5</span>
+                                {% endif %}
+                            </p>
+                            <p class="card-text">{{ pedal.what_makes_it_good|truncatewords:30 }}</p>
+                            <div class="d-grid">
+                                <a href="{% url 'pedals:pedal_detail' pedal.slug %}" class="btn btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        No pedals found matching your criteria.
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
