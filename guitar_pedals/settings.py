@@ -5,12 +5,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-local-secret-key-here')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-zs!ek5$)v(ku)a&6^t&p^(#iaeo!!kylx$)ys#k_qdid9d89p=')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['*']  # We'll let Vercel handle host restrictions
 
 # Application definition
 INSTALLED_APPS = [
@@ -20,8 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
-    'pedals',
+    'pedals',  # Your app
 ]
 
 MIDDLEWARE = [
@@ -88,7 +87,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Media files
 MEDIA_URL = '/media/'
@@ -96,3 +95,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
